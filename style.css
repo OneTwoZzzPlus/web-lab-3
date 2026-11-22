@@ -33,7 +33,10 @@
 body {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 25rem;
+  padding: 0 var(--spacing-md) var(--spacing-md);
   max-width: 36rem;
   margin: 0 auto;
   padding: 0 var(--spacing-md);
@@ -47,6 +50,8 @@ main {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  min-height: 0;
+  container-type: size;
 }
 
 section {
@@ -192,7 +197,9 @@ div.toolbar button {
 
 div.board {
   position: relative;
-  width: 100%;
+  width: min(100%, calc(100dvh - 8rem));
+  width: min(100cqw, max(16rem, 100cqh));
+  margin: 0 auto;
   aspect-ratio: 1;
   --gap: var(--spacing-sm);
   border: var(--border);
@@ -200,6 +207,7 @@ div.board {
   background: var(--color-background);
   touch-action: none;
   user-select: none;
+  container-type: inline-size;
 }
 
 div.cells,
@@ -245,19 +253,18 @@ div.tile-inner {
   color: var(--tile-fg, var(--tile-text-light));
   font-size: clamp(1.5rem, 8vw, 2.5rem);
   font-weight: 700;
+  font-size: 8cqw;
 }
 
 div.tile[data-digits="3"] div.tile-inner {
-  font-size: clamp(1.25rem, 6.5vw, 2rem);
+  font-size: 6.5cqw;
 }
-
 div.tile[data-digits="4"] div.tile-inner {
-  font-size: clamp(1rem, 5vw, 1.6rem);
+  font-size: 5cqw;
 }
-
 div.tile[data-digits="5"] div.tile-inner,
 div.tile[data-digits="6"] div.tile-inner {
-  font-size: clamp(0.8rem, 4vw, 1.25rem);
+  font-size: 4cqw;
 }
 
 div.tile.new div.tile-inner {
@@ -453,4 +460,16 @@ ul.leaders span.name {
 ul.leaders span.date {
   font-size: 0.875rem;
   text-align: right;
+}
+
+@media (max-height: 500px) {
+  div.overlay {
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs);
+    overflow-y: auto;
+  }
+
+  div.overlay p.message {
+    font-size: 1rem;
+  }
 }
