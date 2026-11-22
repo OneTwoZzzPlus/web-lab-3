@@ -24,6 +24,13 @@
   --radius: 0.5rem;
   --shadow: 0 2px 8px rgb(0 0 0 / 15%);
   --transition-slide: 120ms;
+
+  --header-h: 6.5rem;
+  --side: min(
+    34rem,
+    100vw - 2 * var(--spacing-md),
+    max(16rem, 100dvh - var(--header-h) - 2 * var(--spacing-md))
+  );
 }
 
 [hidden] {
@@ -31,15 +38,17 @@
 }
 
 body {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows:
+    minmax(var(--header-h), 1fr)
+    auto
+    minmax(0, 1fr);
   height: 100vh;
   height: 100dvh;
   min-height: 25rem;
-  padding: 0 var(--spacing-md) var(--spacing-md);
-  max-width: 36rem;
+  padding: var(--spacing-md);
+  max-width: calc(var(--side) + 2 * var(--spacing-md));
   margin: 0 auto;
-  padding: 0 var(--spacing-md);
   font-family: system-ui, sans-serif;
   line-height: 1.5;
   color: var(--color-text);
@@ -49,15 +58,6 @@ body {
 main {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  min-height: 0;
-  container-type: size;
-}
-
-section {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
 }
 
 h1,
@@ -163,6 +163,7 @@ header {
   display: grid;
   gap: var(--spacing-xs);
   margin: 0 0 var(--spacing-sm) 0;
+  align-self: end;
 }
 
 header h1 {
@@ -197,8 +198,7 @@ div.toolbar button {
 
 div.board {
   position: relative;
-  width: min(100%, calc(100dvh - 8rem));
-  width: min(100cqw, max(16rem, 100cqh));
+  width: 100%;
   margin: 0 auto;
   aspect-ratio: 1;
   --gap: var(--spacing-sm);
