@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2048</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="src/main.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="scorebar">
+        <h1>2048</h1>
+        <p>очки <span id="score">0</span></p>
+      </div>
+      <div class="toolbar">
+        <button id="leaders-open" type="button">Рекорды</button>
+        <button id="restart" type="button">Заново</button>
+        <button id="undo" type="button">Отменить</button>
+      </div>
+    </header>
+    <main>
+      <div class="board" id="board">
+        <div class="cells" id="cells"></div>
+        <div class="tiles" id="tiles"></div>
+
+        <div class="overlay" id="game-over" hidden>
+          <div id="over-message">
+            <p class="message">
+              Игра окончена!<br />Ваш счет: <span id="final-score">0</span>
+            </p>
+            <form id="save-form">
+              <input
+                id="player-name"
+                type="text"
+                maxlength="20"
+                placeholder="Ваше имя"
+                autocomplete="off"
+              />
+              <button class="full" type="submit">Сохранить результат</button>
+            </form>
+          </div>
+          <div id="saved-message" hidden>
+            <p class="message">Ваш рекорд сохранен</p>
+          </div>
+
+          <button
+            class="iconic"
+            id="over-restart"
+            type="button"
+            title="Начать заново"
+            aria-label="Начать заново"
+          >
+            <img alt="Начать заново" src="assets/reload.svg" />
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <div class="modal" id="modal" hidden>
+      <div class="modal-box" role="dialog" aria-modal="true">
+        <h2>Таблица рекордов</h2>
+        <ul class="leaders" id="leaders">
+          <li class="leaders-head">
+            <span>Имя</span><span>Очки</span><span>Дата</span>
+          </li>
+        </ul>
+        <button class="full" id="modal-close" type="button">Закрыть</button>
+      </div>
+    </div>
+  </body>
+</html>
