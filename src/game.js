@@ -155,3 +155,35 @@ export function undo(state) {
     prev: null,
   };
 }
+
+export function isValidState(s) {
+  const okTile = (t) =>
+    t &&
+    Number.isInteger(t.id) &&
+    Number.isInteger(t.value) &&
+    Number.isInteger(t.row) &&
+    t.row >= 0 &&
+    t.row < SIZE &&
+    Number.isInteger(t.col) &&
+    t.col >= 0 &&
+    t.col < SIZE;
+
+  const okPrev = (p) =>
+    p === null ||
+    (p &&
+      Array.isArray(p.tiles) &&
+      p.tiles.every(okTile) &&
+      Number.isInteger(p.score) &&
+      Number.isInteger(p.nextId));
+
+  return Boolean(
+    s &&
+    Array.isArray(s.tiles) &&
+    s.tiles.every(okTile) &&
+    Number.isInteger(s.score) &&
+    Number.isInteger(s.nextId) &&
+    typeof s.over === "boolean" &&
+    typeof s.saved === "boolean" &&
+    okPrev(s.prev),
+  );
+}

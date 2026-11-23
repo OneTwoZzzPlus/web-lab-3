@@ -114,6 +114,8 @@ button.full {
 /* INPUT */
 
 input {
+  user-select: text;
+  -webkit-user-select: text;
   padding: var(--spacing-sm);
   border: var(--border);
   border-radius: var(--radius);
@@ -402,6 +404,31 @@ div.overlay div {
   gap: var(--spacing-md);
 }
 
+@container (max-width: 22rem) {
+  div.overlay {
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+  }
+  div.overlay div {
+    gap: var(--spacing-sm);
+  }
+  div.overlay p.message {
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-height: 500px) {
+  div.overlay {
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs);
+    overflow-y: auto;
+  }
+
+  div.overlay p.message {
+    font-size: 1rem;
+  }
+}
+
 /* LEADERBOARD */
 
 div.modal {
@@ -421,7 +448,8 @@ div.modal-box {
   gap: var(--spacing-md);
   width: min(100%, 30rem);
   max-height: 90vh;
-  overflow-y: auto;
+  max-height: 90dvh;
+  overflow: hidden;
   padding: var(--spacing-lg);
   border: var(--border);
   border-radius: var(--radius);
@@ -436,6 +464,8 @@ div.modal-box h2 {
 ul.leaders {
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  min-height: 0;
   gap: var(--spacing-xs);
 }
 
@@ -461,14 +491,26 @@ ul.leaders span.date {
   text-align: right;
 }
 
-@media (max-height: 500px) {
-  div.overlay {
-    gap: var(--spacing-xs);
-    padding: var(--spacing-xs);
-    overflow-y: auto;
+@media (max-width: 480px) {
+  div.modal {
+    padding: var(--spacing-sm);
+  }
+  div.modal-box {
+    padding: var(--spacing-md);
   }
 
-  div.overlay p.message {
-    font-size: 1rem;
+  ul.leaders li.leaders-head {
+    display: none;
+  }
+
+  ul.leaders li {
+    grid-template-columns: 1fr auto;
+    gap: 0 var(--spacing-sm);
+  }
+
+  ul.leaders span.date {
+    grid-column: 1 / -1;
+    text-align: left;
+    opacity: 0.6;
   }
 }

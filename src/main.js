@@ -1,4 +1,4 @@
-import { createGame, move, undo } from "./game.js";
+import { createGame, move, undo, isValidState } from "./game.js";
 import { createBoard } from "./components/board.js";
 import { attachKeyboard, attachSwipe } from "./components/input.js";
 import { renderLeaders } from "./components/leaderboard.js";
@@ -47,7 +47,7 @@ document.addEventListener("keydown", (e) => {
 });
 
 let state = loadState();
-if (!state || !Array.isArray(state.tiles)) {
+if (!isValidState(state)) {
   state = createGame();
 }
 
@@ -60,7 +60,8 @@ formEl.addEventListener("submit", (e) => {
   e.preventDefault();
   if (state.saved) return;
 
-  addLeader(nameEl.value.trim() || "Игрок", state.score);
+  const name = Array.from(nameEl.value.trim()).slice(0, 20).join("") || "Игрок";
+  addLeader(name, state.score);
   state.saved = true;
   nameEl.value = "";
   draw();
