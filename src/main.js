@@ -1,6 +1,6 @@
 import { createGame, move, undo } from "./game.js";
 import { createBoard } from "./components/board.js";
-import { attachKeyboard } from "./components/input.js";
+import { attachKeyboard, attachSwipe } from "./components/input.js";
 import { renderLeaders } from "./components/leaderboard.js";
 import {
   loadState,
@@ -102,4 +102,5 @@ function handleMove(dir) {
 }
 
 attachKeyboard(handleMove);
+attachSwipe(document.querySelector("#board"), handleMove);
 draw();
