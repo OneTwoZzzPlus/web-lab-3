@@ -1,14 +1,27 @@
 import { createGame, move } from "./game.js";
 import { createBoard } from "./components/board.js";
+import { attachKeyboard } from "./components/input.js";
 
-const state = createGame();
+const scoreEl = document.querySelector("#score");
+const overlayEl = document.querySelector("#game-over");
+const finalScoreEl = document.querySelector("#final-score");
+
+let state = createGame();
 const board = createBoard(
   document.querySelector("#cells"),
   document.querySelector("#tiles"),
 );
 
-board.render(state);
+function draw() {
+  board.render(state);
+  scoreEl.textContent = state.score;
+  finalScoreEl.textContent = state.score;
+  overlayEl.hidden = !state.over;
+}
 
-// Game in console
-window.state = createGame();
-window.move = move;
+function handleMove(dir) {
+  if (move(state, dir)) draw();
+}
+
+attachKeyboard(handleMove);
+draw();

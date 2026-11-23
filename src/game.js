@@ -73,7 +73,21 @@ function slideTiles(tiles) {
   return { group: stack, gained };
 }
 
+function canMove(state) {
+  if (state.tiles.length < SIZE * SIZE) return true;
+
+  for (const a of state.tiles) {
+    for (const b of state.tiles) {
+      const distance = Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
+      if (distance === 1 && a.value === b.value) return true;
+    }
+  }
+  return false;
+}
+
 export function move(state, dir) {
+  if (state.over) return false;
+
   const result = [];
   let gained = 0;
   let moved = false;
@@ -116,6 +130,8 @@ export function move(state, dir) {
   for (let i = 0; i < count; i++) {
     spawn(state);
   }
+
+  state.over = !canMove(state);
 
   return true;
 }

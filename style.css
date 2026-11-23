@@ -251,7 +251,6 @@ div.tile-inner {
   border-radius: var(--radius);
   background: var(--tile-bg, var(--tile-super));
   color: var(--tile-fg, var(--tile-text-light));
-  font-size: clamp(1.5rem, 8vw, 2.5rem);
   font-weight: 700;
   font-size: 8cqw;
 }
