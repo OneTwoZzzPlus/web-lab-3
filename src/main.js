@@ -33,8 +33,8 @@ function handleRestart() {
 restartBtnEl.addEventListener("click", handleRestart);
 restartOverBtnEl.addEventListener("click", handleRestart);
 
-function draw() {
-  board.render(state);
+function draw(events) {
+  board.render(state, events);
   scoreEl.textContent = state.score;
   finalScoreEl.textContent = state.score;
   overlayEl.hidden = !state.over;
@@ -42,7 +42,8 @@ function draw() {
 }
 
 function handleMove(dir) {
-  if (move(state, dir)) draw();
+  const events = move(state, dir);
+  if (events) draw(events);
 }
 
 attachKeyboard(handleMove);

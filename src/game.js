@@ -16,7 +16,7 @@ export function createGame() {
   return state;
 }
 
-function spawn(state) {
+function spawn(state, fresh = new Set()) {
   const free = [];
   for (let row = 0; row < SIZE; row++) {
     for (let col = 0; col < SIZE; col++) {
@@ -36,6 +36,7 @@ function spawn(state) {
   };
   state.nextId++;
   state.tiles.push(tile);
+  fresh.add(tile.id);
 }
 
 function lineCells(dir, i) {
@@ -86,7 +87,10 @@ function canMove(state) {
 }
 
 export function move(state, dir) {
-  if (state.over) return false;
+  if (state.over) return null;
+
+  const ghosts = [];
+  const merged = new Set();
 
   const result = [];
   let gained = 0;
@@ -113,27 +117,30 @@ export function move(state, dir) {
         result.push({ ...tile, row, col });
       } else {
         moved = true;
+        for (const t of group.sources) {
+          ghosts.push({ id: t.id, row, col });
+        }
+        merged.add(nextId);
         result.push({ id: nextId, row, col, value: group.value });
         nextId++;
       }
     });
   }
 
-  if (!moved) return false;
+  if (!moved) return null;
 
   state.prev = { tiles: state.tiles, score: state.score, nextId: state.nextId };
   state.tiles = result;
   state.nextId = nextId;
   state.score += gained;
 
+  const fresh = new Set();
   const count = Math.random() < 0.5 ? 1 : 2;
-  for (let i = 0; i < count; i++) {
-    spawn(state);
-  }
+  for (let i = 0; i < count; i++) spawn(state, fresh);
 
   state.over = !canMove(state);
 
-  return true;
+  return { ghosts, fresh, merged };
 }
 
 export function undo(state) {

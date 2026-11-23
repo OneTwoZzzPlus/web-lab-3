@@ -10,7 +10,19 @@ export function createBoard(cellsElement, tilesElement) {
 
   const nodes = new Map();
 
-  function render(state) {
+  function render(
+    state,
+    { ghosts = [], fresh = new Set(), merged = new Set() } = {},
+  ) {
+    for (const g of ghosts) {
+      const node = nodes.get(g.id);
+      if (!node) continue;
+      nodes.delete(g.id);
+      node.classList.add("ghost");
+      setPosition(node, g);
+      setTimeout(() => node.remove(), 140);
+    }
+
     const alive = new Set(state.tiles.map((t) => t.id));
     for (const [id, node] of nodes) {
       if (!alive.has(id)) {
@@ -29,6 +41,8 @@ export function createBoard(cellsElement, tilesElement) {
         updateTile(node, tile);
         setPosition(node, tile);
       }
+      node.classList.toggle("new", fresh.has(tile.id));
+      node.classList.toggle("merged", merged.has(tile.id));
     }
   }
 
