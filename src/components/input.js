@@ -7,6 +7,7 @@ export function attachKeyboard(onMove) {
   };
 
   document.addEventListener("keydown", (e) => {
+    if (e.target.tagName === "INPUT") return;
     const dir = keys[e.key];
     if (!dir) return;
     e.preventDefault();
