@@ -16,7 +16,7 @@ export function createGame() {
   return state;
 }
 
-export function spawn(state) {
+function spawn(state) {
   const free = [];
   for (let row = 0; row < SIZE; row++) {
     for (let col = 0; col < SIZE; col++) {
@@ -36,4 +36,86 @@ export function spawn(state) {
   };
   state.nextId++;
   state.tiles.push(tile);
+}
+
+function lineCells(dir, i) {
+  const isHorizontal = dir === "left" || dir === "right";
+  const isReverse = dir === "left" || dir === "up";
+
+  const cells = [];
+  for (let k = 0; k < SIZE; k++) {
+    const j = isReverse ? k : SIZE - 1 - k;
+    if (isHorizontal) cells.push({ row: i, col: j });
+    else cells.push({ row: j, col: i });
+  }
+
+  return cells;
+}
+
+function slideTiles(tiles) {
+  const stack = [];
+  let gained = 0;
+
+  for (const tile of tiles) {
+    let group = { value: tile.value, sources: [tile] };
+
+    while (stack.length > 0 && stack[stack.length - 1].value === group.value) {
+      const top = stack.pop();
+      group = {
+        value: group.value * 2,
+        sources: [...top.sources, ...group.sources],
+      };
+      gained += group.value;
+    }
+    stack.push(group);
+  }
+
+  return { group: stack, gained };
+}
+
+export function move(state, dir) {
+  const result = [];
+  let gained = 0;
+  let moved = false;
+  let nextId = state.nextId;
+
+  for (let i = 0; i < SIZE; i++) {
+    const cells = lineCells(dir, i);
+    const lineTiles = [];
+    for (const { row, col } of cells) {
+      const tile = state.tiles.find((t) => t.row === row && t.col === col);
+      if (tile) lineTiles.push(tile);
+    }
+
+    const slid = slideTiles(lineTiles);
+    gained += slid.gained;
+
+    slid.group.forEach((group, k) => {
+      const { row, col } = cells[k];
+
+      if (group.sources.length === 1) {
+        const tile = group.sources[0];
+        if (tile.row !== row || tile.col !== col) moved = true;
+        result.push({ ...tile, row, col });
+      } else {
+        moved = true;
+        result.push({ id: nextId, row, col, value: group.value });
+        nextId++;
+      }
+    });
+  }
+
+  if (!moved) return false;
+
+  state.prev = { tiles: state.tiles, score: state.score, nextId: state.nextId };
+  state.tiles = result;
+  state.nextId = nextId;
+  state.score += gained;
+
+  const count = Math.random() < 0.5 ? 1 : 2;
+  for (let i = 0; i < count; i++) {
+    spawn(state);
+  }
+
+  return true;
 }

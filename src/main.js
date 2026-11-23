@@ -1,4 +1,4 @@
-import { createGame } from "./game.js";
+import { createGame, move } from "./game.js";
 import { createBoard } from "./components/board.js";
 
 const state = createGame();
@@ -8,3 +8,7 @@ const board = createBoard(
 );
 
 board.render(state);
+
+// Game in console
+window.state = createGame();
+window.move = move;
