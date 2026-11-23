@@ -29,10 +29,12 @@ const modalCloseEl = document.querySelector("#modal-close");
 function openLeaders() {
   renderLeaders(leadersEl, getLeaders());
   modalEl.hidden = false;
+  modalCloseEl.focus();
 }
 
 function closeLeaders() {
   modalEl.hidden = true;
+  leadersOpenEl.focus();
 }
 
 leadersOpenEl.addEventListener("click", openLeaders);
@@ -43,7 +45,13 @@ modalEl.addEventListener("click", (e) => {
 });
 
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && !modalEl.hidden) closeLeaders();
+  if (modalEl.hidden) return;
+  if (e.key === "Escape") {
+    closeLeaders();
+  } else if (e.key === "Tab") {
+    e.preventDefault();
+    modalCloseEl.focus();
+  }
 });
 
 let state = loadState();
