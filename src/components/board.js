@@ -32,5 +32,10 @@ export function createBoard(cellsElement, tilesElement) {
     }
   }
 
-  return { render };
+  function clear() {
+    tilesElement.replaceChildren();
+    nodes.clear();
+  }
+
+  return { render, clear };
 }

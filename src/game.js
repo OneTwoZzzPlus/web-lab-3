@@ -135,3 +135,16 @@ export function move(state, dir) {
 
   return true;
 }
+
+export function undo(state) {
+  if (!state.prev || state.over) return null;
+
+  return {
+    tiles: state.prev.tiles,
+    score: state.prev.score,
+    nextId: state.prev.nextId,
+    over: false,
+    saved: false,
+    prev: null,
+  };
+}
